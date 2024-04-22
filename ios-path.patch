@@ -1,0 +1,31 @@
+diff --git a/osxphotos/photosdb/photosdb.py b/osxphotos/photosdb/photosdb.py
+index f84f6a02..d6ace2b8 100644
+--- a/osxphotos/photosdb/photosdb.py
++++ b/osxphotos/photosdb/photosdb.py
+@@ -380,6 +380,8 @@ class PhotosDB:
+ 
+         # If Photos >= 5, actual data isn't in photos.db but in Photos.sqlite
+         if int(self._db_version) > int(_PHOTOS_4_VERSION):
++            # We might not want to do this if the photo database is copied with
++            # another filename and --db is used for example.
+             dbpath = pathlib.Path(self._dbfile).parent
+             dbfile = dbpath / "Photos.sqlite"
+             if not _check_file_exists(dbfile):
+@@ -398,6 +400,8 @@ class PhotosDB:
+                 f"_dbfile = {self._dbfile}, _dbfile_actual = {self._dbfile_actual}"
+             )
+ 
++        is_ios = True # TODO
++
+         if not library_path:
+             # library_path not provided as argument (this is the normal case)
+             # determine library path relative to the database path
+@@ -407,6 +411,8 @@ class PhotosDB:
+         if int(self._db_version) <= int(_PHOTOS_4_VERSION):
+             masters_path = os.path.join(library_path, "Masters")
+             self._masters_path = masters_path
++        elif is_ios:
++            self._masters_path = masters_path = library_path
+         else:
+             masters_path = os.path.join(library_path, "originals")
+             self._masters_path = masters_path

@@ -89,6 +89,10 @@
           hash = "sha256-yt9Dl7WlrVVbMK6//9BDMORDQhi9xmL1FUVNvK1uTR4=";
         };
 
+        patches = [
+          ./ios-path.patch
+        ];
+
         propagatedBuildInputs = with pkgs.python3Packages; [
           bitmath
           bpylist2
@@ -149,7 +153,6 @@
           packages = [ (pkgs.python3.withPackages (ps: [osxphotos])) ];
         };
 
-      packages.x86_64-linux.src = osxphotos.src;
       packages.x86_64-linux.bpylist2 = bpylist2;
       packages.x86_64-linux.objexplore = objexplore;
       packages.x86_64-linux.rich_theme_manager = rich_theme_manager;
